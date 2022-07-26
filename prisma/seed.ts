@@ -22,7 +22,7 @@ const main = async () => {
   const voluntarios: Omit<Voluntarios, "id" | "createdAt" | "updatedAt"> = {
     cursoId: 52,
     nome: "Gabriel Viana Boaes",
-    dataNasc: new Date("2001-05-16"),
+    dataNasc: "12/12/2000",
     telefone: "98999073330",
     email: "gabriel.viana@einsteinfloripa.com",
     cpf: "123456789",
@@ -37,7 +37,8 @@ const main = async () => {
 
   const entrada: Omit<Entradas, "id"> = {
     voluntarioId: voluntario.id,
-    data: new Date("2020-01-01"),
+    mes: "Janeiro",
+    ano: "2020",
   };
 
   const endereco: Omit<Enderecos, "id"> = {

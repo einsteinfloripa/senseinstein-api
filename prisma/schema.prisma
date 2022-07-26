@@ -47,7 +47,7 @@ model Voluntarios {
   id           String       @id @default(cuid())
   cursoId      Int
   nome         String
-  dataNasc     DateTime
+  dataNasc     String
   telefone     String
   email        String       @unique
   cpf          String       @unique
@@ -105,9 +105,10 @@ model Instituicoes {
 }
 
 model Entradas {
-  id           Int      @id @default(autoincrement())
+  id           Int    @id @default(autoincrement())
   voluntarioId String
-  data         DateTime
+  mes          String
+  ano          String
 
   voluntario Voluntarios @relation(fields: [voluntarioId], references: [id])
 
@@ -115,9 +116,10 @@ model Entradas {
 }
 
 model Saidas {
-  id           Int       @id @default(autoincrement())
+  id           Int    @id @default(autoincrement())
   voluntarioId String
-  data         DateTime
+  mes          String
+  ano          String
 
   voluntario Voluntarios @relation(fields: [voluntarioId], references: [id])
 

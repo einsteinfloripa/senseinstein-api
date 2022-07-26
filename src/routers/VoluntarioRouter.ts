@@ -1,4 +1,5 @@
 import { VoluntarioController } from "@controllers/VoluntarioController";
+import { voluntarioMiddleware } from "@middlewares/voluntarioMiddleware";
 import { Router } from "express";
 
 export class VoluntarioRouter {
@@ -14,6 +15,7 @@ export class VoluntarioRouter {
 
     voluntarioRouter.post(
       "/voluntario",
+      voluntarioMiddleware,
       VoluntarioController.adicionarVonlutario,
     );
   }
