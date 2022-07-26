@@ -10,72 +10,115 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Users {
-  id       String @id @default(cuid())
-  email    String @unique
-  password String
-
-  @@map("users")
+enum Funcao {
+  Organizador
+  Docente
 }
 
-model Categories {
+enum Departamento {
+  Hogwarts
+  Vale
+  Ministerio
+  Times
+  Embaixada
+  Portugues
+  Literatura
+  Ingles
+  Espanhol
+  Matematica
+  Biologia
+  Historia
+  Geografia
+  Fisica
+  Quimica
+  Filosofia
+  Redacao
+}
+
+enum EstadoCivil {
+  Solteiro
+  Casado
+  Divorciado
+  Separado
+  Viuvo
+}
+
+model Voluntarios {
+  id           String       @id @default(cuid())
+  cursoId      Int
+  enderecoId   Int
+  nome         String
+  dataNasc     DateTime
+  telefone     String
+  email        String
+  cpf          String       @unique
+  rg           String       @unique
+  estadoCivil  EstadoCivil
+  funcao       Funcao
+  departamento Departamento
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @default(now())
+
+  Saidas   Saidas[]
+  Entradas Entradas[]
+
+  curso    Cursos    @relation(fields: [cursoId], references: [id])
+  endereco Enderecos @relation(fields: [enderecoId], references: [id])
+
+  @@map("voluntarios")
+}
+
+model Enderecos {
+  id          Int    @id @default(autoincrement())
+  cidade      String
+  cep         String
+  rua         String
+  bairro      String
+  complemento String
+
+  Voluntarios Voluntarios[]
+
+  @@map("enderecos")
+}
+
+model Cursos {
+  id            Int    @id @default(autoincrement())
+  instituicaoId Int
+  nome          String
+
+  Voluntarios Voluntarios[]
+
+  instituicao Instituicoes @relation(fields: [instituicaoId], references: [id])
+
+  @@map("cursos")
+}
+
+model Instituicoes {
   id   Int    @id @default(autoincrement())
-  name String
+  nome String
 
-  Tests Tests[]
+  Cursos Cursos[]
 
-  @@map("categories")
+  @@map("instituicoes")
 }
 
-model Tests {
-  id                  String @id @default(cuid())
-  teacherDisciplineId Int
-  categoryId          Int
-  name                String
-  pdfUrl              String
+model Entradas {
+  id           Int      @id @default(autoincrement())
+  voluntarioId String
+  data         DateTime @default(now())
 
-  teacher  TeacherDisciplines @relation(fields: [teacherDisciplineId], references: [id])
-  category Categories         @relation(fields: [categoryId], references: [id])
+  voluntario Voluntarios @relation(fields: [voluntarioId], references: [id])
 
-  @@map("tests")
+  @@map("entradas")
 }
 
-model TeacherDisciplines {
-  id           Int    @id @default(autoincrement())
-  teacherId    String
-  disciplineId Int
+model Saidas {
+  id           Int      @id @default(autoincrement())
+  voluntarioId String
+  data         DateTime @default(now())
 
-  Tests Tests[]
+  voluntario Voluntarios @relation(fields: [voluntarioId], references: [id])
 
-  teacher    Teachers    @relation(fields: [teacherId], references: [id])
-  discipline Disciplines @relation(fields: [disciplineId], references: [id])
-
-  @@map("teacherDisciplines")
-}
-
-model Teachers {
-  id                 String               @id @default(cuid())
-  name               String
-  TeacherDisciplines TeacherDisciplines[]
-
-  @@map("teachers")
-}
-
-model Disciplines {
-  id     Int    @id @default(autoincrement())
-  termId Int
-  name   String
-
-  term               Terms                @relation(fields: [termId], references: [id])
-  TeacherDisciplines TeacherDisciplines[]
-
-  @@map("disciplines")
-}
-
-model Terms {
-  id          Int           @id @default(autoincrement())
-  name        Int
-  Disciplines Disciplines[]
-
-  @@map("terms")
+  @@map("saidas")
 }
