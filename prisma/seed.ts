@@ -35,8 +35,9 @@ const main = async () => {
   await prisma.cursos.createMany({ data: cursos });
   const voluntario = await prisma.voluntarios.create({ data: voluntarios });
 
-  const entrada: Omit<Entradas, "id" | "data"> = {
+  const entrada: Omit<Entradas, "id"> = {
     voluntarioId: voluntario.id,
+    data: new Date("2020-01-01"),
   };
 
   const endereco: Omit<Enderecos, "id"> = {
