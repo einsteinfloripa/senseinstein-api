@@ -46,7 +46,6 @@ enum EstadoCivil {
 model Voluntarios {
   id           String       @id @default(cuid())
   cursoId      Int
-  enderecoId   Int
   nome         String
   dataNasc     DateTime
   telefone     String
@@ -57,27 +56,28 @@ model Voluntarios {
   funcao       Funcao
   departamento Departamento
 
-  createdAt DateTime @default(now())
-  updatedAt DateTime @default(now())
+  createdAt DateTime?  @default(now())
+  updatedAt DateTime?
 
-  Saidas   Saidas[]
-  Entradas Entradas[]
+  Saidas    Saidas[]
+  Entradas  Entradas[]
+  Enderecos Enderecos[]
 
-  curso    Cursos    @relation(fields: [cursoId], references: [id])
-  endereco Enderecos @relation(fields: [enderecoId], references: [id])
+  curso Cursos @relation(fields: [cursoId], references: [id])
 
   @@map("voluntarios")
 }
 
 model Enderecos {
-  id          Int    @id @default(autoincrement())
-  cidade      String
-  cep         String
-  rua         String
-  bairro      String
-  complemento String
+  id           Int    @id @default(autoincrement())
+  voluntarioId String
+  cidade       String
+  cep          String
+  rua          String
+  bairro       String
+  complemento  String
 
-  Voluntarios Voluntarios[]
+  voluntario Voluntarios @relation(fields: [voluntarioId], references: [id])
 
   @@map("enderecos")
 }
@@ -95,8 +95,9 @@ model Cursos {
 }
 
 model Instituicoes {
-  id   Int    @id @default(autoincrement())
-  nome String
+  id    Int    @id @default(autoincrement())
+  nome  String
+  sigla String
 
   Cursos Cursos[]
 
@@ -116,7 +117,7 @@ model Entradas {
 model Saidas {
   id           Int      @id @default(autoincrement())
   voluntarioId String
-  data         DateTime @default(now())
+  data         DateTime? @default(now())
 
   voluntario Voluntarios @relation(fields: [voluntarioId], references: [id])
 

@@ -1,6 +1,8 @@
 import express, { Application } from "express";
 import cors from "cors";
-import { NameRouter } from "@routers/routerName";
+
+import { VoluntarioRouter } from "@routers/VoluntarioRouter";
+import { CursosRouter } from "@routers/CursosRouter";
 
 export class App {
   public app: Application;
@@ -20,6 +22,7 @@ export class App {
   private buildRouter() {
     const { app } = this;
 
-    app.use(new NameRouter().nameRouter);
+    app.use(new VoluntarioRouter().voluntarioRouter);
+    app.use(new CursosRouter().cursosRouter);
   }
 }

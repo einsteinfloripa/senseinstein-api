@@ -17,7 +17,8 @@
       "@types/*": ["./src/models/*"],
       "@repositories/*": ["./src/repositories/*"],
       "@tests/factories/*": ["./__test__/factories/*"]
-    }
+    },
+    "resolveJsonModule": true
   },
   "ts-node": {
     "esm": true
